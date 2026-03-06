@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VidyaAI – AI Powered Learning Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050a14;
+    --surface: #0c1626;
+    --card: #101e33;
+    --border: #1a3050;
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --accent3: #f59e0b;
+    --text: #e2eaf5;
+    --muted: #6b87a8;
+    --success: #10b981;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Sora', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* Animated background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 20%, rgba(0,212,255,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 60% at 80% 80%, rgba(124,58,237,0.07) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAVBAR */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2.5rem;
+    background: rgba(5,10,20,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .nav-logo span { color: var(--text); }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  .nav-btn {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    padding: 0.55rem 1.4rem;
+    border-radius: 6px;
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .nav-btn:hover { opacity: 0.85; }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 8rem 2rem 4rem;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(0,212,255,0.1);
+    border: 1px solid rgba(0,212,255,0.3);
+    color: var(--accent);
+    padding: 0.35rem 1rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -2px;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  .hero h1 .highlight {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero p {
+    font-size: 1.15rem;
+    color: var(--muted);
+    max-width: 540px;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    border: none;
+    padding: 0.85rem 2rem;
+    border-radius: 8px;
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 30px rgba(0,212,255,0.2);
+  }
+
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(0,212,255,0.35); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 0.85rem 2rem;
+    border-radius: 8px;
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    margin-top: 4rem;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .stat { text-align: center; }
+  .stat-num { font-size: 2rem; font-weight: 800; color: var(--accent); }
+  .stat-label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 0.2rem; }
+
+  /* SUBJECTS */
+  .section {
+    position: relative;
+    z-index: 1;
+    padding: 5rem 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-sub {
+    color: var(--muted);
+    font-size: 1rem;
+    margin-bottom: 3rem;
+    max-width: 500px;
+  }
+
+  .subjects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .subject-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .subject-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .subject-card.math::before { background: linear-gradient(90deg, var(--accent), #0088ff); }
+  .subject-card.science::before { background: linear-gradient(90deg, var(--success), #00cc88); }
+  .subject-card.english::before { background: linear-gradient(90deg, var(--accent3), #ff6b35); }
+
+  .subject-card:hover { transform: translateY(-4px); border-color: rgba(0,212,255,0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+  .subject-card:hover::before { opacity: 1; }
+
+  .subject-icon {
+    width: 52px; height: 52px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .subject-card.math .subject-icon { background: rgba(0,212,255,0.12); }
+  .subject-card.science .subject-icon { background: rgba(16,185,129,0.12); }
+  .subject-card.english .subject-icon { background: rgba(245,158,11,0.12); }
+
+  .subject-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .subject-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.25rem; }
+
+  .subject-topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .topic-tag {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* AI TEACHER */
+  .ai-section {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 5rem 2rem;
+  }
+
+  .ai-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .chat-window {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .chat-header {
+    background: rgba(0,212,255,0.08);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .ai-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+  }
+
+  .ai-name { font-weight: 700; font-size: 0.9rem; }
+  .ai-status { font-size: 0.72rem; color: var(--success); display: flex; align-items: center; gap: 0.3rem; }
+  .ai-status::before { content: '●'; }
+
+  .chat-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-height: 300px;
+    max-height: 360px;
+    overflow-y: auto;
+  }
+
+  .msg {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    animation: fadeUp 0.3s ease both;
+  }
+
+  .msg.user { flex-direction: row-reverse; }
+
+  .msg-avatar {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+
+  .msg.ai .msg-avatar { background: linear-gradient(135deg, var(--accent), var(--accent2)); }
+
+  .msg-bubble {
+    max-width: 75%;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+
+  .msg.ai .msg-bubble { background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.15); border-top-left-radius: 4px; }
+  .msg.user .msg-bubble { background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.2); border-top-right-radius: 4px; }
+
+  .chat-input-area {
+    padding: 1rem 1.25rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .chat-input {
+    flex: 1;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.65rem 1rem;
+    color: var(--text);
+    font-family: 'Sora', sans-serif;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .chat-input:focus { border-color: var(--accent); }
+  .chat-input::placeholder { color: var(--muted); }
+
+  .send-btn {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    border-radius: 8px;
+    padding: 0.65rem 1.1rem;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.85rem;
+    font-family: 'Sora', sans-serif;
+    transition: opacity 0.2s;
+  }
+
+  .send-btn:hover { opacity: 0.85; }
+
+  /* QUIZ */
+  .quiz-section {
+    position: relative;
+    z-index: 1;
+    padding: 5rem 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .quiz-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .quiz-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  .quiz-q {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 1.75rem;
+    line-height: 1.5;
+  }
+
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .quiz-option {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.9rem 1.2rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .quiz-option:hover { border-color: var(--accent); background: rgba(0,212,255,0.05); }
+  .quiz-option.correct { border-color: var(--success); background: rgba(16,185,129,0.1); color: var(--success); }
+  .quiz-option.wrong { border-color: #ef4444; background: rgba(239,68,68,0.1); color: #ef4444; }
+
+  .opt-label {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    background: var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    transition: background 0.2s;
+  }
+
+  .quiz-option:hover .opt-label { background: var(--accent); color: var(--bg); }
+
+  .progress-bar-wrap {
+    background: var(--border);
+    border-radius: 999px;
+    height: 6px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 999px;
+    transition: width 0.5s ease;
+  }
+
+  /* DASHBOARD */
+  .dashboard-section {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 5rem 2rem;
+  }
+
+  .dashboard-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+    margin-top: 2.5rem;
+  }
+
+  .dash-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+
+  .dash-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; }
+  .dash-value { font-size: 2rem; font-weight: 800; }
+  .dash-change { font-size: 0.78rem; color: var(--success); margin-top: 0.25rem; }
+
+  .progress-rows { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+
+  .prog-row { display: flex; flex-direction: column; gap: 0.4rem; }
+  .prog-info { display: flex; justify-content: space-between; font-size: 0.85rem; }
+  .prog-pct { font-weight: 700; color: var(--accent); font-family: 'Space Mono', monospace; }
+
+  /* FOOTER */
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 3rem 2rem;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  footer .footer-logo { font-size: 1.2rem; font-weight: 800; color: var(--accent); margin-bottom: 0.5rem; }
+  footer p { margin-top: 0.5rem; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .typing::after {
+    content: '▋';
+    animation: blink 0.8s infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .subjects-grid { grid-template-columns: 1fr; }
+    .ai-inner { grid-template-columns: 1fr; }
+    .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
+    .nav-links { display: none; }
+    .hero-stats { gap: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-logo">📚 Vidya<span>AI</span></div>
+  <ul class="nav-links">
+    <li><a href="#subjects">Subjects</a></li>
+    <li><a href="#ai-teacher">AI Teacher</a></li>
+    <li><a href="#quiz">Quiz</a></li>
+    <li><a href="#dashboard">Dashboard</a></li>
+  </ul>
+  <button class="nav-btn">Get Started</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">✦ Powered by AI</div>
+  <h1>Learn Smarter with<br><span class="highlight">AI-Driven Education</span></h1>
+  <p>VidyaAI is your intelligent learning companion. Master Math, Science, and English through personalized AI lessons, interactive quizzes, and smart progress tracking.</p>
+  <div class="hero-actions">
+    <button class="btn-primary" onclick="scrollToSection('ai-teacher')">Try AI Teacher →</button>
+    <button class="btn-secondary" onclick="scrollToSection('subjects')">Explore Subjects</button>
+  </div>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">3+</div>
+      <div class="stat-label">Subjects</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Questions</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">24/7</div>
+      <div class="stat-label">AI Support</div>
+    </div>
+  </div>
+</section>
+
+<!-- SUBJECTS -->
+<section class="section" id="subjects">
+  <div class="section-label">Learning Areas</div>
+  <h2 class="section-title">Choose Your Subject</h2>
+  <p class="section-sub">Dive deep into core subjects with AI-powered explanations tailored to your level.</p>
+  <div class="subjects-grid">
+    <div class="subject-card math" onclick="selectSubject('Math')">
+      <div class="subject-icon">🔢</div>
+      <h3>Mathematics</h3>
+      <p>From basic arithmetic to advanced calculus — master numbers with step-by-step AI guidance.</p>
+      <div class="subject-topics">
+        <span class="topic-tag">Algebra</span>
+        <span class="topic-tag">Geometry</span>
+        <span class="topic-tag">Calculus</span>
+        <span class="topic-tag">Statistics</span>
+      </div>
+    </div>
+    <div class="subject-card science" onclick="selectSubject('Science')">
+      <div class="subject-icon">🔬</div>
+      <h3>Science</h3>
+      <p>Explore physics, chemistry, and biology with interactive experiments and visual explanations.</p>
+      <div class="subject-topics">
+        <span class="topic-tag">Physics</span>
+        <span class="topic-tag">Chemistry</span>
+        <span class="topic-tag">Biology</span>
+        <span class="topic-tag">Earth Sci</span>
+      </div>
+    </div>
+    <div class="subject-card english" onclick="selectSubject('English')">
+      <div class="subject-icon">📖</div>
+      <h3>English</h3>
+      <p>Improve grammar, vocabulary, writing, and reading comprehension with AI-powered coaching.</p>
+      <div class="subject-topics">
+        <span class="topic-tag">Grammar</span>
+        <span class="topic-tag">Vocabulary</span>
+        <span class="topic-tag">Writing</span>
+        <span class="topic-tag">Reading</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI TEACHER -->
+<section class="ai-section" id="ai-teacher">
+  <div class="ai-inner">
+    <div>
+      <div class="section-label">Intelligent Tutor</div>
+      <h2 class="section-title">Your Personal<br>AI Teacher</h2>
+      <p style="color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem;">Ask anything. Get clear, instant explanations adapted to your learning style. Available 24/7, endlessly patient, always helpful.</p>
+      <ul style="list-style:none; display:flex; flex-direction:column; gap:0.75rem;">
+        <li style="display:flex; gap:0.75rem; align-items:center; font-size:0.9rem;"><span style="color:var(--accent);">✦</span> Step-by-step problem solving</li>
+        <li style="display:flex; gap:0.75rem; align-items:center; font-size:0.9rem;"><span style="color:var(--accent);">✦</span> Concept explanations at your level</li>
+        <li style="display:flex; gap:0.75rem; align-items:center; font-size:0.9rem;"><span style="color:var(--accent);">✦</span> Instant feedback on your answers</li>
+        <li style="display:flex; gap:0.75rem; align-items:center; font-size:0.9rem;"><span style="color:var(--accent);">✦</span> Encouragement and hints when stuck</li>
+      </ul>
+    </div>
+    <div class="chat-window">
+      <div class="chat-header">
+        <div class="ai-avatar">🤖</div>
+        <div>
+          <div class="ai-name">VidyaAI Teacher</div>
+          <div class="ai-status">Online & ready to help</div>
+        </div>
+      </div>
+      <div class="chat-body" id="chatBody">
+        <div class="msg ai">
+          <div class="msg-avatar">🤖</div>
+          <div class="msg-bubble">Namaste! 👋 I'm your VidyaAI teacher. Ask me anything about Math, Science, or English — I'm here to help you learn!</div>
+        </div>
+      </div>
+      <div class="chat-input-area">
+        <input class="chat-input" id="chatInput" placeholder="Ask a question..." onkeydown="if(event.key==='Enter') sendMsg()" />
+        <button class="send-btn" onclick="sendMsg()">Send →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section class="quiz-section" id="quiz">
+  <div style="text-align:center; margin-bottom:3rem;">
+    <div class="section-label">Test Yourself</div>
+    <h2 class="section-title">Practice Quiz</h2>
+    <p style="color:var(--muted);">Challenge yourself and reinforce what you've learned.</p>
+  </div>
+  <div class="quiz-card">
+    <div class="quiz-meta">
+      <span 
